@@ -9,10 +9,14 @@ import (
 	"net"
 	"time"
 
-	"github.com/asavie/xdp"
-	"github.com/asavie/xdp/examples/dumpframes/ebpf"
+	//"github.com/asavie/xdp"
+	"github.com/jursonmo/xdp"
+
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"
+
+	//"github.com/asavie/xdp/examples/dumpframes/ebpf"
+	"github.com/jursonmo/xdp/examples/dumpframes/ebpf"
 )
 
 //  ./fast_l2fwd -inlink=eth0  -ipproto=1 -dstIp=192.168.0.1  -outlink=eth1 -dstMac=00:00:11:22:33:44
@@ -129,7 +133,7 @@ func main() {
 			// descriptors and push them onto the Fill ring queue
 			// for the kernel to fill them with the received
 			// frames.
-			xsk.Fill(xsk.GetDescs(n))
+			xsk.Fill(xsk.GetDescs(n, true))
 		}
 
 		// Wait for receive - meaning the kernel has
