@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"reflect"
 	"time"
 	"unsafe"
 
@@ -103,7 +104,7 @@ func (p *FastL2fwdProgram) RegisterL2fwdInfo(dstip net.IP, inif int, outif int, 
 		Outif  uint32
 		DstMac [6]byte
 	}{uint32(outif), mac}
-	log.Printf("need check align is same to bpf; sizeof(fwd):%d\n", unsafe.Sizeof(fwd))
+	log.Printf("need check align is same to bpf; sizeof(fwd):%d, align:%d\n", unsafe.Sizeof(fwd), reflect.TypeOf(fwd).Align())
 
 	/* Loading dummy XDP prog on out-device */
 	// if err := p.AttachDummyProgram(outif); err != nil {
