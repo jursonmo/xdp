@@ -65,6 +65,20 @@ root@ubuntu:~# bpftool map
 104: xskmap  name xsks_map  flags 0x0
 	key 4B  value 4B  max_entries 64  memlock 4096B
 
+//# -p/--pretty：人类友好格式打印, 比如
+//$ sudo bpftool -p map show id 13
+<!-- {
+    "id": 13,
+    "type": "sockhash",
+    "name": "sock_ops_map",
+    "flags": 0,
+    "bytes_key": 24,
+    "bytes_value": 4,
+    "max_entries": 65535,
+    "bytes_memlock": 5767168,
+    "frozen": 0
+} -->
+
 root@ubuntu:~# bpftool map dump id 101
 key: 00 00 00 00  value: <no entry>
 key: 01 00 00 00  value: <no entry>
