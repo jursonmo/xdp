@@ -77,7 +77,7 @@ func main() {
 	}
 	dstip := net.ParseIP(dstIp)
 	log.Printf("dstip:%v, len(dstip)=%d\n", dstip, len(dstip))
-
+	dstipv4 := dstip.To4()
 	program, err := ebpf.NewFastL2fwdProgram(ipproto, nil)
 	if err != nil {
 		fmt.Printf("err:%v", err)
@@ -163,7 +163,7 @@ func main() {
 				log.Printf("----pktDip:%v, need to match dstip is:%v------\n", pktDip, dstip)
 				log.Printf("----pktDip:%02x%02x%02x%02x,-----\n", pktDip[0], pktDip[1], pktDip[2], pktDip[3])
 				log.Printf("----dstip:%02x%02x%02x%02x,------\n", dstip[0], dstip[1], dstip[2], dstip[3])
-				if bytes.Equal(pktDip[:4], dstip[12:16]) {
+				if bytes.Equal(pktDip[:4], dstipv4 /*dstip[12:16]*/) {
 					err := program.RegisterL2fwdInfo(dstip[12:16], inIfindex, outIfindex, []byte(dstmac))
 					if err != nil {
 						log.Printf("err:%v\n", err)
