@@ -18,3 +18,21 @@ github.com/asavie/xdp 提供了docker 编译的环境，不需要在linux环境�
    ```go
    //go:generate $HOME/go/bin/bpf2go fast_l2fwd fast_l2fwd.c -- -I/usr/include/ -I./include -nostdinc -O3
    ```
+
+#### 注意事项
+https://github.com/xdp-project/xdp-tutorial/tree/master/packet03-redirecting#sending-packets-back-to-the-interface-they-came-from
+/*
+The XDP_TX return value can be used to send the packet back from the same interface it came from. 
+This functionality can be used to implement load balancers, to send simple ICMP replies, 
+etc. We will use this functionality in the Assignment 1 to implement a simple ICMP echo server.
+
+Note that in order to the transmit and/or redirect functionality to work, 
+all involved devices should have an attached XDP program, including both veth peers. 
+We have to do this because veth devices won’t deliver redirected/retransmitted XDP frames 
+unless there is an XDP program attached to the receiving side of the target veth interface.
+Physical hardware will likely behave the same. XDP maintainers are currently working on fixing this behaviour upstream.
+See the Veth XDP: XDP for containers talk which describes the reasons behind this problem. 
+(The xdpgeneric mode may be used without this limitation.)
+*/
+
+xdpgeneric 模式不需要veth peer attached XDP program, fast_l2fwd 就是用xdpgeneric 模式 才测试通过。

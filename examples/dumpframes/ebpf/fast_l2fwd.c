@@ -56,7 +56,20 @@ struct bpf_map_def SEC("maps") txport_map = {
 	.value_size = sizeof(int),
 	.max_entries = MAX_PORT,
 };
+//https://github.com/xdp-project/xdp-tutorial/tree/master/packet03-redirecting#sending-packets-back-to-the-interface-they-came-from
+/*
+The XDP_TX return value can be used to send the packet back from the same interface it came from. 
+This functionality can be used to implement load balancers, to send simple ICMP replies, 
+etc. We will use this functionality in the Assignment 1 to implement a simple ICMP echo server.
 
+Note that in order to the transmit and/or redirect functionality to work, 
+all involved devices should have an attached XDP program, including both veth peers. 
+We have to do this because veth devices won’t deliver redirected/retransmitted XDP frames 
+unless there is an XDP program attached to the receiving side of the target veth interface.
+Physical hardware will likely behave the same. XDP maintainers are currently working on fixing this behaviour upstream.
+See the Veth XDP: XDP for containers talk which describes the reasons behind this problem. 
+(The xdpgeneric mode may be used without this limitation.)
+*/
 /* Redirect require an XDP bpf_prog loaded on the TX device */
 SEC("xdp_redirect_dummy")
 int xdp_redirect_dummy_prog(struct xdp_md *ctx)
